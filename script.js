@@ -1,29 +1,30 @@
-//Получение и дальнейшая обработка json
+//Получение json
 fetch('https://dummyjson.com/products')
     .then((res) => res.json())
     .then((data) => getTask(data))
    
-
-
 function getTask(data) {
-    const productsList = document.querySelector(".products__list");
-    const product = document.getElementsByClassName("product");
-    const productsItem = document.getElementsByClassName("products__item");
-    const tooltip = document.getElementsByClassName("tooltip");
+    // Сам список и элемента списка
+    const productsList = document.querySelector(".products__list"),
+        product = document.getElementsByClassName("product"),
+        productsItem = document.getElementsByClassName("products__item");
+    
+    // Стрелки вперед, назад, табло    
+    const sliderNext = document.querySelector(".slider__next"),
+        sliderPrev = document.querySelector(".slider__prev"),
+        sliderNum = document.querySelector(".slider__number");
+
     const select = document.querySelector("#select");
-    const sliderNext = document.querySelector(".slider__next");
-    const sliderPrev = document.querySelector(".slider__prev");
 
-    let step = 0;
     // Инициализация 
-    setCards(0, 10)
-    setTooltips(0, 10)
+    let step = 0;
+    createCards(0, 10);
+    setTooltips(0, 10);
 
-    function setCards(minPic, numPic) {
-        
+//Создание карточек
+    function createCards(minPic, numPic) {
         let products = data.products;
         for (let i = minPic; i < numPic; i++) {
-        //Создание карточек
             productsList.insertAdjacentHTML('beforeend', `
                 <li class=product draggable="true">
                     <div class="products__item">
@@ -42,11 +43,11 @@ function getTask(data) {
         }
     } 
 
+//Создание и наполнение всплывающих подсказок
     function setTooltips() {
         let products = data.products;
         console.log(step)
         for (let i = 0; i < 10; i++) {
-            //Наполнение подсказок
             productsItem[i].insertAdjacentHTML('afterbegin', `
                 <div class="tooltip">
                     <figure class="picture">
@@ -75,12 +76,15 @@ function getTask(data) {
             `)
         }
     }
-    // setTooltips(0, 10)
+
+//Удаление карточек   
     function deleteCards(min, max) {
         for (let i = min; i < max; i++) {
             product[0].remove();
         } 
     }
+
+//Прокрутка вперед
     function forward() {
         sliderNext.addEventListener('click', ()=> {
             deleteCards(0, 10);
@@ -88,11 +92,14 @@ function getTask(data) {
             if (step > 20) {
                 step = 20;
             }
-            setCards(0 + step, 10 + step)
+            createCards(0 + step, 10 + step)
             setTooltips()
+            sliderNum.textContent = `${step + 1}` + `-` + `${step + 10}`
         })
     } 
     forward() 
+
+//Прокрутка назад
     function previous() {
         sliderPrev.addEventListener('click', ()=> {
             deleteCards(0, 10);
@@ -100,11 +107,14 @@ function getTask(data) {
             if (step < 0) {
                 step = 0;
             }
-            setCards(0 + step, 10 + step); 
-            setTooltips()  
+            createCards(0 + step, 10 + step); 
+            setTooltips();
+            sliderNum.textContent = `${step + 1}` + `-` + `${step + 10}` 
         })
     }
     previous()
+
+//Реализация перетаскивания элементов списка
     function setDraggable() {
         // //Добавляю реакцию на начало и конец перетаскивание
     productsList.addEventListener(`dragstart`, (evt) => {
@@ -159,22 +169,11 @@ function getTask(data) {
     })
     }
     setDraggable()
-    function setNum() {
-        select.addEventListener('change', ()=> {
-            deleteCards()
-            setCards()   
-        })
-    }
-    // setNum()
-    
+   
 } 
 
 
 
-// getTask(data) 
-
-// sliderNext.addEventListener('click', )
-// console.log(data);
 
 
 

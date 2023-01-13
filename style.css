@@ -102,3 +102,13 @@ figcaption {
   text-align: center;
   text-transform: uppercase;
 }
+.slider {
+  width: 300px;
+  background-color: green;
+  display: flex;
+  text-align: center;
+  justify-content: space-between
+}
+/* .slider__prev {
+  width: ;
+} */

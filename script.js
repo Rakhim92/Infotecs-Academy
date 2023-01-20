@@ -26,7 +26,7 @@ function getTask(data) {
 //Создание карточек
     function createCards(minPic, numPic) {
         let products = data.products;
-        
+        // debugger
         for (let i = minPic; i < numPic; i++) {
             productsList.insertAdjacentHTML('beforeend', `
                 <li class=product draggable="true">
@@ -49,8 +49,7 @@ function getTask(data) {
 //Создание и наполнение всплывающих подсказок
     function setTooltips() {
         let products = data.products;
-       
-        console.log(step)
+
         for (let i = 0; i < changeNumPic(); i++) {
             productsItem[i].insertAdjacentHTML('afterbegin', `
                 <div class="tooltip">
@@ -93,9 +92,11 @@ function getTask(data) {
         sliderNext.addEventListener('click', ()=> {
             deleteCards(0, changeNumPic());
             step += changeNumPic();
-            if (step > 20) {
+
+            if (changeNumPic() === 10 && step > 20) {
                 step = 20;
-            
+            } else if (changeNumPic() === 5 && step > 25) {
+                step = 25;
             }
             createCards(0 + step, changeNumPic() + step);
             setTooltips();
@@ -177,45 +178,25 @@ function getTask(data) {
    
 //Изменение количества отображаемых элементов с 10 до 5 и обратно
     function changeNumPic() {
-        let a = 10
-        
-        // select.addEventListener('change', ()=> {
-        //     a = select.value;
-        //     // console.log(a)
-        //     return a
-        // }) 
-        // console.log(a)
+        let a = 10;
+        a = Number(select.value);
         return a;
-        
     }
-    function lol() {
-        let a = select.value;
+    function setNum() {
         
-        // select.addEventListener('change', ()=> {
-        //     a = select.value;
-        //     // console.log(a)
-        //     return a
-        // }) 
-        // console.log(a)
-        return a;
-        
+        select.addEventListener('change', ()=> {
+            deleteCards(0, product.length);
+            createCards(0, changeNumPic());
+            step = 0;
+            setTooltips();
+            sliderNum.textContent = `${step + 1}` + `-` + `${step + changeNumPic()}`; 
+        })
     }
-
-function fol() {
-    document.addEventListener('click', (a)=> {
-        a = select.value;
-        // console.log(a)
-        return a
-     })
-     return a
-}
-console.log(fol())
-
-   
+    setNum()
     
 } 
 
-
+// alert("Остановочка")
 
 
 
